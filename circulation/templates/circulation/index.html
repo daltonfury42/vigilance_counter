@@ -47,7 +47,8 @@
   </div>
   <div class="col-md-5">
     <div class="container-fluid" >
-    <form  method="POST" action="read_rollno.php" role="form" style="margin-top:80px;">
+	    <form  method="POST" action="{% url 'circulation:acceptRoll' %}" role="form" style="margin-top:80px;">
+		    {% csrf_token %}
         <label class="container-fluid">Roll No:</label>
         <div class="form-group">
           <div class="col-xs-8">
