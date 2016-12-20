@@ -38,6 +38,10 @@
   </div>
  
  <h1>Welcome</h1>
+
+{% if prev_transaction %}
+	<p>Previous Transaction: {{ prev_transaction }}</p>
+{% endif %}
   
 <!-- for scanning the roll no of a student -->
 <div class="container-fluid">

@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-
+{% load staticfiles %}
 <html lang="en">
 
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
-	<link rel="stylesheet" type="text/css" href="mystyle.css">
+	<link href={% static "circulation/bootstrap/css/bootstrap.min.css" %} rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="{% static 'circulation/mystyle.css' %}">
 	<title>Books</title>
-	<link rel="shortcut icon" href="images/images.jpg" />
+	<link rel="shortcut icon" href="{% static 'circulation/images/images.jpg' %}" />
    <style> 
    form {margin-top: 2em;} 
    #accession {margin-top: -1em;}
@@ -22,7 +22,7 @@
 <body >
 
 <div id="nitc" >
-	<p1 id="header" >NITC Library {{ roll }}</p1>
+	<p1 id="header" >NITC Library </p1>
 </div>
 
 <!-- homepage and admin page links-->
@@ -50,41 +50,27 @@
 	
 	<label class="control-label col-sm-4" >Roll No: </label>
 	<div class="col-sm-8" >
-	<input type="text" id="rollnos" name="roll" class="form-control" value="<?php echo $_SESSION['rollno']; ?>" readonly>
+		<input type="text" id="rollnos" name="roll" class="form-control" value="{{ roll }}" readonly>
 	</div>
      </div>
       
-	<?php
-		$added_count = $_SESSION['counter'] ; ;
-	?>
-
      <div class="container" style="position: fixed; margin-left:640px;  ">
-	<h3> <?php echo "Number of Books Added are : {$added_count}<br>" ; ?> </h3>
+	     Number of Books Added are : {{ books|length }}<br>
      </div>
    </form>
   </div>
 
-      <?php
-	$status = 0;
-	$i = 0;
-	$count_books = $_SESSION['counter'] ;
-	while($i < $count_books)
-	{	
-		$bk = "book".$i;
-		$_SESSION['cancel'] = $i;
-		$status = 1; //for submit button
-		$k = $i + 1;
-		?>
-		<form class="form-horizontal" role="form" action="cancel.php" method="POST" id="print">
+  {% for book in books %}
+  	<form class="form-horizontal" role="form" action="{% url 'circulation:cancelBook' %}" method="POST" id="print">
+		    {% csrf_token %}
 		  <div class="form-group">
-			<label class="control-label col-sm-2" for="<?php echo $bk ; ?>"><?php echo "Book-".$k. ":"; ?></label>
 		 
 			<div class="col-sm-5">
 			 
-			<input type="text" id="<?php echo $bk ; ?>"  class="form-control" value="<?php echo $_SESSION[$bk]; ?>" readonly >
+				<input type="text" id="{{ book }}"  class="form-control" value="{{ book }}" readonly >
 					 
 
-			<input type="number" name="cancel" value="<?php echo $i ; ?>" hidden>			
+			<input type="text" name="cancel" value="{{ book }}" hidden>			
 			
 			</div>
 			<button class="btn btn-warning btn-sm">
@@ -93,13 +79,8 @@
 			
 		</div>
 	
-		</form>
-		<?php
-		  $i += 1;
-	}
-   ?>
-  
-
+	</form>
+    {% endfor %}
 
 </div>
 
@@ -114,11 +95,12 @@
   <div class="col-md-5">
 
      <div class="container-fluid">
-	<form action="read.php" method="POST" role="form" id="accession" style="margin-top:130px; position: fixed; margin-left:60px;">
+	     <form action="{% url 'circulation:issue' %}" method="POST" role="form" id="accession" style="margin-top:130px; position: fixed; margin-left:60px;">
+		     {% csrf_token %}
 	    <label class="container-fluid">Accession No:</label>
 	    <div class="form-group">
 		  <div class="col-xs-12">
-	    		<input type="text" id="booknos" name="book" class="form-control" placeholder="Enter Accession No" required autofocus>
+	    		<input type="text" id="booknos" name="accn_no" class="form-control" placeholder="Enter Accession No" required autofocus>
 		</div></br>
 	     </div></br>
 	    <div class="container-fluid">
@@ -130,20 +112,9 @@
      </div>
 
 <form>
-<?php
-
-if($status == 1)
-{	
-
-	 
-	?>
-	<div >	
-       	   <a  style="position: fixed; margin-top:20%; font-size:48px;" href="taken2.php"  class="btn btn-success btn-lg">Issue Books</a>
+<div >	
+	<a  style="position: fixed; margin-top:20%; font-size:48px;" href="{% url 'circulation:writeDB' %}"  class="btn btn-success btn-lg">Issue Books</a>
 	</div> 
-	<?php
-}
-
-?>
 </form>
 
  </div>
