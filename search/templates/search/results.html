@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+	{% load staticfiles %}
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="{% static 'mystyle.css' %}">
+	<title>Admin Page</title>
+	<link rel="shortcut icon" href="{% static 'images/images.jpg' %}" />
+
+
+</head>
+
+<body>
+<div class="tohide">
+<div id="nitc" >
+  <p1 id="header" >NITC Library</p1>
+</div>
+
+<!-- homepage and admin page links-->
+  <div class="container" >
+	<ul class="nav nav-pills">
+		<li id="menu_bar"><a href="{% url 'circulation:home' %}"><span class="glyphicon glyphicon-home"></span>Home</a></li>
+		<li id="menu_bar"><a href="{% url 'search:home' %}"><span class="glyphicon glyphicon-globe"></span>Search</a></li>
+	   <li id="menu_bar"><a href="http://library.nitc.ac.in/people.html" target="_blank"><span class="glyphicon glyphicon-wrench"></span>Support</a></li>
+	   <li id="menu_bar"><a href="about.php"><span class="glyphicon glyphicon-question-sign"></span>About</a></li>
+	</ul>
+  </div>
+
+
+<h1>Results</h1>
+<!-- taking admin queries -->
+</div>
+<div class="container">
+<div class="row">
+<div class="col-md-12">
+	<div class="tohide">
+	<a href="{% url 'search:downloadCSV' %}" class="btn btn-success btn-md">
+	<span class="glyphicon glyphicon-download"></span> Download as CSV </a>
+<a href="#" onclick="$('.tohide').hide(); window.print(); return false;" class="btn btn-success btn-md">
+	<span class="glyphicon glyphicon-download"></span> Download as PDF </a>
+	</div>
+
+	{% if results %}
+		 <table class="table table-hover" style="margin-top:10px">
+			<thead>
+				<tr>
+				 <th>Name</th>
+				 <th>Accn No.</th>
+				 <th>Time Stamp</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for row in results %}
+					<tr>
+						<td>{{ row.roll }}</td>
+						<td>{{ row.accn_no }}</td>
+						<td>{{ row.time_stamp }}</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	{% else %}
+		<p>No match found.</p>
+	{% endif %}
+ </div>
+</div>
+</div>
+<!-- ************************ -->
+
+
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="{% static 'jquery-1.11.1/jquery.min.js' %}"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+
+</body>
+</html>

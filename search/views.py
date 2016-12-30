@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from circulation.models import CheckOuts
+import csv
 
 # Create your views here.
 def getQueryView(request):
@@ -25,9 +26,22 @@ def getQueryView(request):
 		to_date = '2032-01-01'
 
 	query = "SELECT * FROM circulation_checkouts WHERE roll = " + roll + " and accn_no = " + accn_no + " and time_stamp > Datetime('" + from_date + " 00:00:00') and time_stamp < Datetime('" + to_date + " 23:59:59')"
-	print("Query: " + query)
-	for p in CheckOuts.objects.raw(query):
-		print(p.roll)
+	request.session['query'] = query
+	request.session.modified = True
+	
+	results = CheckOuts.objects.raw(query)
 
-	return HttpResponse("Works!")
+	return render(request, 'search/results.html', { 'results':results })
 		
+def downloadCsvView(request):
+	response = HttpResponse(content_type='text/csv')
+	response['Content-Disposition'] = 'attachment; filename="results.csv"'
+
+	writer = csv.writer(response)
+	writer.writerow(['Roll Number', 'Accn Number', 'Time Stamp'])
+
+	results = CheckOuts.objects.raw(request.session['query'])
+	for row in results:
+		writer.writerow([row.roll, row.accn_no, row.time_stamp])
+
+	return response
