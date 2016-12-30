@@ -43,7 +43,7 @@
   <div class="container-fluid">
 	
 
-	<form method="POST" action="getQuery" role="form" id="admin" >
+	  <form method="POST" action="{% url 'search:getQuery' %}" role="form" id="admin" >
 		{% csrf_token %}
 
 	     <div class="form-group">

@@ -37,8 +37,34 @@
 <div class="row">
 <div class="col-md-12">
 	<div class="tohide">
-	<a href="{% url 'search:downloadCSV' %}" class="btn btn-success btn-md">
-	<span class="glyphicon glyphicon-download"></span> Download as CSV </a>
+	<form method="POST" action="{% url 'search:downloadCSV' %}">
+		{% csrf_token %}
+	{% if rollno %}
+			<input type="hidden" name="rollno" value="{{ rollno }}">
+	{% endif %}
+	{% if bookno %}
+			<input type="hidden" name="bookno" value="{{ bookno }}">
+	{% endif %}
+	{% if from_yy %}
+			<input type="hidden" name="from_yy" value="{{ from_yy }}">
+	{% endif %}
+	{% if from_mm %}
+			<input type="hidden" name="from_mm" value="{{ from_mm }}">
+	{% endif %}
+	{% if from_dd %}
+			<input type="hidden" name="from_dd" value="{{ from_dd }}">
+	{% endif %}
+	{% if to_yy %}
+			<input type="hidden" name="to_yy" value="{{ to_yy }}">
+	{% endif %}
+	{% if to_mm %}
+			<input type="hidden" name="to_mm" value="{{ to_mm }}">
+	{% endif %}
+	{% if to_dd %}
+			<input type="hidden" name="to_dd" value="{{ to_dd }}">
+	{% endif %}
+	<button class="btn btn-success btn-md" type="submit">
+		<span class="glyphicon glyphicon-download"></span> Download as CSV </button>
 <a href="#" onclick="$('.tohide').hide(); window.print(); return false;" class="btn btn-success btn-md">
 	<span class="glyphicon glyphicon-download"></span> Download as PDF </a>
 	</div>
