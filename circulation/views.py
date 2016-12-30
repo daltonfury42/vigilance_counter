@@ -4,8 +4,16 @@ from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from .models import CheckOuts
 from django.utils import timezone
+from datetime import date
 
 # Create your views here.
+def HomeView(request):
+	today = date.today()
+	todays_entries = CheckOuts.objects.filter(time_stamp__year = today.year, time_stamp__month = today.month, time_stamp__day = today.day)
+	books_count = len({entry.accn_no for entry in todays_entries})
+	patrons_count = len({entry.roll for entry in todays_entries})
+	return render(request, 'circulation/index.html', { 'books_count':books_count, 'patrons_count':patrons_count })
+
 def IssueView(request):
 	if 'accn_no' in request.POST.keys():
 		request.session['books'].append(request.POST['accn_no'])
@@ -29,5 +37,6 @@ def WriteDBView(request):
 	for book in request.session['books']:
 		CheckOuts(roll=request.session['roll'], accn_no=book, time_stamp=timezone.now()).save()
 
-	return render(request, 'circulation/index.html', { 'prev_transaction':'success' })
+	return HttpResponseRedirect(reverse('circulation:home'))
+	#return render(request, 'circulation/index.html', { 'prev_transaction':'success' })
 

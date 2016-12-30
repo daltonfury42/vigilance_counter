@@ -39,15 +39,22 @@
  
  <h1>Welcome</h1>
 
-{% if prev_transaction %}
-	<p>Previous Transaction: {{ prev_transaction }}</p>
-{% endif %}
   
 <!-- for scanning the roll no of a student -->
 <div class="container-fluid">
  <div class="row">
-  <div id="track" class="col-md-7">
-    <p id="myDiv"></p>
+  <div id="track" class="col-md-7" >
+	  <div style="margin-top:80px; margin-left:50px;">
+		{% if books_count %}
+			{% if prev_transaction %}
+				<p>Previous Transaction: {{ prev_transaction }}</p>
+			{% endif %}
+			<p>Number of books issued today: {{ books_count }}</p>
+			<p>Number of patrons served today: {{ patrons_count }}</p>
+		{% else %}
+		<p>Good Morning!</p>
+		{% endif %}
+   </div>
   </div>
   <div class="col-md-5">
     <div class="container-fluid" >
