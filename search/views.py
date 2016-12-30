@@ -38,10 +38,10 @@ def downloadCsvView(request):
 	response['Content-Disposition'] = 'attachment; filename="results.csv"'
 
 	writer = csv.writer(response)
-	writer.writerow(['Roll Number', 'Accn Number', 'Time Stamp'])
+	writer.writerow(['Entry ID','Patron ID', 'Accession Number', 'Time Stamp'])
 
 	results = CheckOuts.objects.raw(request.session['query'])
 	for row in results:
-		writer.writerow([row.roll, row.accn_no, row.time_stamp])
+		writer.writerow([row.pk ,row.roll, row.accn_no, row.time_stamp])
 
 	return response
