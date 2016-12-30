@@ -25,7 +25,7 @@
 		<li id="menu_bar"><a href="{% url 'circulation:home' %}"><span class="glyphicon glyphicon-home"></span>Home</a></li>
 		<li id="menu_bar"><a href="{% url 'search:home' %}"><span class="glyphicon glyphicon-globe"></span>Search</a></li>
 	   <li id="menu_bar"><a href="http://library.nitc.ac.in/people.html" target="_blank"><span class="glyphicon glyphicon-wrench"></span>Support</a></li>
-	   <li id="menu_bar"><a href="about.php"><span class="glyphicon glyphicon-question-sign"></span>About</a></li>
+	   <li id="menu_bar"><a href="{% url 'circulation:about' %}"><span class="glyphicon glyphicon-question-sign"></span>About</a></li>
 	</ul>
   </div>
 
