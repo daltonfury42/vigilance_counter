@@ -58,17 +58,15 @@
   </div>
   <div class="col-md-5">
     <div class="container-fluid" >
-	    <form  method="POST" action="{% url 'circulation:acceptRoll' %}" role="form" style="margin-top:80px;">
+	    <form  method="POST" action="{% url 'circulation:start' %}" role="form" style="margin-top:80px;">
 		    {% csrf_token %}
-        <label class="container-fluid">Roll No:</label>
         <div class="form-group">
           <div class="col-xs-8">
              
-            <input type="text" name="roll" id="rollno" placeholder="Enter Student Roll Number" autofocus class="form-control" required>
           </div></br>
         </div></br>
         <div class="container-fluid">
-         <button type="submit" class="btn btn-primary ">Submit</button>
+         <button type="submit" class="btn btn-primary ">Start</button>
          </div>   
     </form>
      </div>

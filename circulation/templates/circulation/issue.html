@@ -10,79 +10,67 @@
 	<link rel="stylesheet" type="text/css" href="{% static 'mystyle.css' %}">
 	<title>Books</title>
 	<link rel="shortcut icon" href="{% static 'images/images.jpg' %}" />
-   <style> 
-   form {margin-top: 2em;} 
-   #accession {margin-top: -1em;}
-
-   
-   </style>
+   	<style> 
+   		form {margin-top: 2em;} 
+   		#accession {margin-top: -1em;}
+	</style>
+	<script>
+		window.onload = function()
+		{ 	if($('#rollnos').val() === '') 
+			{
+				var patronID = prompt("Enter patron ID: "); 
+				$('#rollnos').val(patronID);
+			        $('#hiddenroll').val(patronID);	
+			}
+		}					
+	</script>
 
 </head>
 
 <body >
 
-<div id="nitc" >
-	<p1 id="header" >NITC Library </p1>
-</div>
+	<div id="nitc" >
+		<p1 id="header" >NITC Library </p1>
+	</div>
 
 <!-- homepage and admin page links-->
-  <div class="container" >
-	<ul class="nav nav-pills">
-		<li id="menu_bar"><a href="{% url 'circulation:home' %}"><span class="glyphicon glyphicon-home"></span>Home</a></li>
-		<li id="menu_bar"><a href="{% url 'search:home' %}"><span class="glyphicon glyphicon-globe"></span>Search</a></li>
-	   <li id="menu_bar"><a href="http://library.nitc.ac.in/people.html" target="_blank"><span class="glyphicon glyphicon-wrench"></span>Support</a></li>
-	   <li id="menu_bar"><a href="{% url 'circulation:about' %}"><span class="glyphicon glyphicon-question-sign"></span>About</a></li>
-	</ul>
-  </div>
+	<div class="container" >
+		<ul class="nav nav-pills">
+			<li id="menu_bar"><a href="{% url 'circulation:home' %}"><span class="glyphicon glyphicon-home"></span>Home</a></li>
+			<li id="menu_bar"><a href="{% url 'search:home' %}"><span class="glyphicon glyphicon-globe"></span>Search</a></li>
+	   		<li id="menu_bar"><a href="http://library.nitc.ac.in/people.html" target="_blank"><span class="glyphicon glyphicon-wrench"></span>Support</a></li>
+	   		<li id="menu_bar"><a href="{% url 'circulation:about' %}"><span class="glyphicon glyphicon-question-sign"></span>About</a></li>
+		</ul>
+  	</div>
 <!--*******-->
 
-   <h1>Issue Books</h1>
+   	<h1>Issue Books</h1>
 
-<div class="container">
- <div class="row">
-  <div class="col-md-7">
+	<div class="container">
+ 		<div class="row">
+  			<div class="col-md-7">
 
 <!-- printing the books entered-->
 
-  <div class="container-fluid">
-   <form class="form-horizontal" role="form" > 
-     <div class="form-group" id="pos_fixed2" style="position: fixed; margin-left:635px;  margin-top:55px;">
-	
-	<label class="control-label col-sm-4" >Roll No: </label>
-	<div class="col-sm-8" >
-		<input type="text" id="rollnos" name="roll" class="form-control" value="{{ roll }}" readonly>
-	</div>
-     </div>
-      
-     <div class="container" style="position: fixed; margin-left:640px;  ">
-	     Number of Books Added are : {{ books|length }}<br>
-     </div>
-   </form>
-  </div>
 
-  {% for book in books %}
-  	<form class="form-horizontal" role="form" action="{% url 'circulation:cancelBook' %}" method="POST" id="print">
-		    {% csrf_token %}
-		  <div class="form-group">
-		 
-			<div class="col-sm-5">
-			 
-				<input type="text" id="{{ book }}"  class="form-control" value="{{ book }}" readonly >
-					 
-
-			<input type="text" name="cancel" value="{{ book }}" hidden>			
+  				{% for book in books %}
+  				<form class="form-horizontal" role="form" action="{% url 'circulation:cancelBook' %}" method="POST" id="print">
+		    		{% csrf_token %}
+		  			<div class="form-group">
+						<div class="col-sm-5">
+							<input type="text" id="{{ book }}"  class="form-control" value="{{ book }}" readonly >
+							<input type="text" name="cancel" value="{{ book }}" hidden>			
+						</div>
+						<button class="btn btn-warning btn-sm">
+          						<span class="glyphicon glyphicon-remove"></span>
+        					</button>
 			
+					</div>
+	
+				</form>
+    				{% endfor %}
+
 			</div>
-			<button class="btn btn-warning btn-sm">
-          			<span class="glyphicon glyphicon-remove"></span>
-        		</button>
-			
-		</div>
-	
-	</form>
-    {% endfor %}
-
-</div>
 
 
 
@@ -92,44 +80,49 @@
 
 	
   
-  <div class="col-md-5">
+  			<div class="col-md-5">
 
-     <div class="container-fluid">
-	     <form action="{% url 'circulation:issue' %}" method="POST" role="form" id="accession" style="margin-top:130px; position: fixed; margin-left:60px;">
-		     {% csrf_token %}
-	    <label class="container-fluid">Accession No:</label>
-	    <div class="form-group">
-		  <div class="col-xs-12">
-	    		<input type="text" id="booknos" name="accn_no" class="form-control" placeholder="Enter Accession No" required autofocus>
-		</div></br>
-	     </div></br>
-	    <div class="container-fluid">
-	     <button type="submit" class="btn btn-primary">Add Book</button>
-	     </div>
+     				<div class="container-fluid">
+	     				<form action="{% url 'circulation:issue' %}" method="POST" role="form" id="accession" style="margin-top:50px;">
+					{% csrf_token %}
+	    					<div class="form-group">
+	     						<p>Number of Books Added are : {{ books|length }}</p><br>
+							<div class="col-sm-4>
+								<label class="control-label " >Roll No: </label>
+								<input type="text" id="rollnos" name="roll" class="form-control" value="{{ roll }}" readonly>
+								<br>
+	    							<label class="control-label ">Accession No:</label>
+	    							<input type="text" id="booknos" name="accn_no" class="form-control" placeholder="Enter Accession No" required autofocus>
+							</div>
+							<br>
+	     						<button type="submit" class="btn btn-primary">Add Book</button>
+	     					</div>
 		
-	</form>
+					</form>
 
-     </div>
+     				</div>
 
-<form>
-<div >	
-	<a  style="position: fixed; margin-top:20%; font-size:48px;" href="{% url 'circulation:writeDB' %}"  class="btn btn-success btn-lg">Issue Books</a>
-	</div> 
-</form>
+     				<div class="container-fluid" style="margin-top:320px">
+					<form method="POST" action="{% url 'circulation:writeDB' %}">
+		     				{% csrf_token %}
+						<input type="text" name="roll" id="hiddenroll" value="{{ roll }}" hidden>
+						<button  action="submit"  class="btn btn-success btn-lg">Issue Books</button>
+					</form>
+				</div>
 
- </div>
-</div>
-</div>
+ 			</div>
+		</div>
+	</div>
 
 <!-- ************ -->
 
 <!-- opening the page from bottom-->
 
 
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="{% static 'jquery-1.11.1/jquery.min.js' %}"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+    	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    	<script src="{% static 'jquery-1.11.1/jquery.min.js' %}"></script>
+	<!-- Include all compiled plugins (below), or include individual files as needed -->
+    	<script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
 
 </body>
 </html>
